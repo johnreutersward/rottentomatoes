@@ -1,15 +1,18 @@
 package rottentomatoes
 
 import (
-    "io/ioutil"
     "net/url"
     "bytes"
-    "log"
-    "net/http"
+    //"log"
     "encoding/json"
+    //"fmt"
     "text/template"
     "errors"
 )
+
+type Error struct {
+    Error string `json:"error"`
+}
 
 type Cast struct {
 	Name string `json:"name"`
@@ -33,30 +36,37 @@ func (c *Client) CastInfo(id string) ([]Cast, error) {
 
     endp := buf.String() + v.Encode()
 
-    res, err := http.Get(endp)
+    data, err := c.Request(endp)
+    
     if err != nil {
-        log.Fatal(err)
+        return nil, err
     }
 
-    data, err := ioutil.ReadAll(res.Body)
-    res.Body.Close()
-    if err != nil {
-        log.Fatal(err)
-    }
+    //var f interface{}
+    //_ = json.Unmarshal(data, &f)
+
 
     var jsond map[string]*json.RawMessage
     err = json.Unmarshal(data, &jsond)
     if err != nil {
-        log.Fatal(err)
+        //log.Fatal(err)
     }
-    
     var castList []Cast
-    errs := json.Unmarshal(*jsond["cast"], &castList)   
+    errs := json.Unmarshal(*jsond["cast"], &castList)
     if errs != nil {
-        log.Fatal(errs)
+        //log.Fatal(errs)
     }
 
-    return castList, errs
+    //fmt.Printf("%+v", castList)
+    //return castList, errs
+
+    // m := f.(map[string]interface{})
+    // b := []byte(m["cast"])
+
+    // var castList []Cast
+    // err = json.Unmarshal(b, &castList)   
+
+    return castList, err
 }
 
 
