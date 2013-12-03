@@ -1,6 +1,9 @@
 package rottentomatoes
 
-import "testing"
+import (
+	"testing"
+	"reflect"
+)
 
 func TestUnmarshalCastInfo(t *testing.T) {
 	data := `{
@@ -25,16 +28,22 @@ func TestUnmarshalCastInfo(t *testing.T) {
 	        "rel": "http://api.rottentomatoes.com/api/public/v1.0/movies/14281.json"
 	    }
 	}`
-	result, _ := UnmarshalCastInfo([]byte(data))
-	if result == nil {
+	
+	got, _ := UnmarshalCastInfo([]byte(data))
+	if got == nil {
 		t.Errorf("result was empty")
 	}
 
-	// c1 := &Cast{Name: "Jeff Bridges", Id: "162655890", Characters: []string{"The Dude"},}
-	// c1 := &Cast{Name: "John Goodman", Id: "162655706", Characters: []string{"Walter Sobchak"},}
-	// c1 := &Cast{Name: "Julianne Moore", Id: "162654248", Characters: []string{"Maude Lebowski"},}
-	// c1 := &Cast{Name: "Steve Buscemi", Id: "162652875", Characters: []string{"Donny"},}
+	want := []Cast{
+		Cast{Name: "Jeff Bridges", Id: "162655890", Characters: []string{"The Dude"}},
+		Cast{Name: "John Goodman", Id: "162655706", Characters: []string{"Walter Sobchak"}},
+		Cast{Name: "Julianne Moore", Id: "162654248", Characters: []string{"Maude Lebowski"}},
+		Cast{Name: "Steve Buscemi", Id: "162652875", Characters: []string{"Donny"}},
+	}
 
-	//true := []Cast{}
+	if !reflect.DeepEqual(got, want) {
+    	t.Errorf("UnmarshalCastInfo = %+v, want %+v", got, want)
+    }
+
 
 }

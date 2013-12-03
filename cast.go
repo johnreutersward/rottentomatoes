@@ -17,7 +17,7 @@ type Error struct {
 type Cast struct {
 	Name string `json:"name"`
 	Id string `json:"id"`
-	//Characters []string `json:"characters"`
+	Characters []string `json:"characters"`
 }
 
 
