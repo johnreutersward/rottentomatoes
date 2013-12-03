@@ -30,11 +30,11 @@ func TestUnmarshalCastInfo(t *testing.T) {
 		t.Errorf("result was empty")
 	}
 
-	c1 := &Cast{Name: "Jeff Bridges", Id: "162655890", Characters: []string{"The Dude"},}
-	c1 := &Cast{Name: "John Goodman", Id: "162655706", Characters: []string{"Walter Sobchak"},}
-	c1 := &Cast{Name: "Julianne Moore", Id: "162654248", Characters: []string{"Maude Lebowski"},}
-	c1 := &Cast{Name: "Steve Buscemi", Id: "162652875", Characters: []string{"Donny"},}
+	// c1 := &Cast{Name: "Jeff Bridges", Id: "162655890", Characters: []string{"The Dude"},}
+	// c1 := &Cast{Name: "John Goodman", Id: "162655706", Characters: []string{"Walter Sobchak"},}
+	// c1 := &Cast{Name: "Julianne Moore", Id: "162654248", Characters: []string{"Maude Lebowski"},}
+	// c1 := &Cast{Name: "Steve Buscemi", Id: "162652875", Characters: []string{"Donny"},}
 
-	true := []Cast{}
+	//true := []Cast{}
 
 }
