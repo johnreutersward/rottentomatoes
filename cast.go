@@ -17,15 +17,11 @@ type Cast struct {
 
 func UnmarshalCastInfo(data []byte) ([]Cast, error) {
     var jsond map[string]*json.RawMessage
-    err := json.Unmarshal(data, &jsond)
-    if err != nil {
-        //log.Fatal(err)
-    }
+    _ = json.Unmarshal(data, &jsond)
+
     var castList []Cast
-    err = json.Unmarshal(*jsond["cast"], &castList)
-    if err != nil {
-        //log.Fatal(errs)
-    }
+    err := json.Unmarshal(*jsond["cast"], &castList)
+
     return castList, err
 }
 

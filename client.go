@@ -5,7 +5,6 @@ import (
     "net/http"
     "encoding/json"
     "errors"
-    //"fmt"
 )
 
 type Client struct {
