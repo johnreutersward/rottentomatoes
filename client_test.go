@@ -15,7 +15,32 @@ func TestApiKey(t *testing.T) {
 func TestBaseUrls(t *testing.T) {
 	apikey := "123abc"
 	c := NewClient(apikey)
+	
+	if c.BaseUrl["MoviesInfo"] != "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}.json?" {
+		t.Errorf("wrong/missing BaseUrl value")
+	}
+
 	if c.BaseUrl["CastInfo"] != "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/cast.json?" {
-		t.Errorf("wrong BaseUrl value")
+		t.Errorf("wrong/missing BaseUrl value")
+	}
+
+	if c.BaseUrl["MovieClips"] != "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/clips.json?" {
+		t.Errorf("wrong/missing BaseUrl value")
+	}
+
+	if c.BaseUrl["MovieReviews"] != "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/reviews.json?" {
+		t.Errorf("wrong/missing BaseUrl value")
+	}
+
+	if c.BaseUrl["MoviesSimilar"] != "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/similar.json?" {
+		t.Errorf("wrong/missing BaseUrl value")
+	}
+
+	if c.BaseUrl["MoviesAlias"] != "http://api.rottentomatoes.com/api/public/v1.0/movie_alias.json?" {
+		t.Errorf("wrong/missing BaseUrl value")
+	}
+
+	if c.BaseUrl["Search"] != "http://api.rottentomatoes.com/api/public/v1.0/movies.json?" {
+		t.Errorf("wrong/missing BaseUrl value")
 	}
 }

@@ -3,16 +3,10 @@ package rottentomatoes
 import (
     "net/url"
     "bytes"
-    //"log"
     "encoding/json"
-    //"fmt"
     "text/template"
     "errors"
 )
-
-type Error struct {
-    Error string `json:"error"`
-}
 
 type Cast struct {
 	Name string `json:"name"`
