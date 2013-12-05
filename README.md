@@ -1,10 +1,13 @@
 # rotttentomatoes
 
+[![Build Status](https://goci.herokuapp.com/project/image/github.com/rojters/rottentomatoes)]
+
 Rotten Tomatoes API wrapper for Go
 
 ## Usage
 
 Start by applying for an API key at http://developer.rottentomatoes.com/ (it's free).
+
 Install by issuing: 
 
 ```bash
