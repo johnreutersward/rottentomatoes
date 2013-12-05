@@ -163,3 +163,39 @@ func TestUnmarshalMovies(t *testing.T) {
 	}
 
 }
+
+func TestUnmarshalSearch(t *testing.T) {
+	data := `{
+		"total": 2,
+		"movies": [{
+			    "id": "104762093",
+	        	"title": "Fargo",
+	        	"year": 1996
+			}, {
+				"id": "770717155",
+        		"title": "Fargo Express",
+        		"year": 1932
+			}]
+	}`
+
+	got, total, err := UnmarshalSearch([]byte(data))
+
+	if err != nil {
+		log.Panic(err)
+	}
+
+	want_total := 2
+	want := []Movies{
+		Movies{Id: "104762093", Title: "Fargo", Year: 1996},
+		Movies{Id: "770717155", Title: "Fargo Express", Year: 1932},
+	}
+
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("UnmarshalSearch = %+v,\nwant %+v", got, want)
+	}
+
+	if total != want_total {
+		t.Errorf("UnmarshalSearch/total = %+v,\nwant %+v", total, want_total)
+	}
+
+}

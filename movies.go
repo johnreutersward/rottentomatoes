@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"net/url"
+	"strconv"
 	"text/template"
 )
 
@@ -82,6 +83,10 @@ type Links struct {
 	Similar   string `json:"similar"`
 }
 
+type Total struct {
+	Total int `json:"total"`
+}
+
 func UnmarshalMoviesInfo(data []byte) (Movie, error) {
 	var m Movie
 	err := json.Unmarshal(data, &m)
@@ -97,6 +102,19 @@ func UnmarshalMovies(data []byte) ([]Movies, error) {
 	err := json.Unmarshal(*jsond["movies"], &movieList)
 
 	return movieList, err
+}
+
+func UnmarshalSearch(data []byte) ([]Movies, int, error) {
+	var jsond map[string]*json.RawMessage
+	_ = json.Unmarshal(data, &jsond)
+
+	var movieList []Movies
+	err := json.Unmarshal(*jsond["movies"], &movieList)
+
+	var t int
+	err = json.Unmarshal(*jsond["total"], &t)
+
+	return movieList, t, err
 }
 
 func (c *Client) MoviesInfo(id string) (Movie, error) {
@@ -127,7 +145,7 @@ func (c *Client) MoviesInfo(id string) (Movie, error) {
 	return movie, err
 }
 
-func (c *Client) MoviesSimilar(id string, limit string) ([]Movies, error) {
+func (c *Client) MoviesSimilar(id string, limit int) ([]Movies, error) {
 
 	var movies []Movies
 
@@ -139,8 +157,10 @@ func (c *Client) MoviesSimilar(id string, limit string) ([]Movies, error) {
 	buf := new(bytes.Buffer)
 	t.Execute(buf, id)
 
+	limit_t := strconv.Itoa(limit)
+
 	v := url.Values{}
-	v.Set("limit", limit)
+	v.Set("limit", limit_t)
 	v.Set("apikey", c.ApiKey)
 
 	endp := buf.String() + v.Encode()
@@ -184,4 +204,39 @@ func (c *Client) MoviesAlias(id string) (Movie, error) {
 	movie, err = UnmarshalMoviesInfo(data)
 
 	return movie, err
+}
+
+func (c *Client) MoviesSearch(q string, page_limit int, page int) ([]Movies, int, error) {
+
+	var movies []Movies
+	var total int
+
+	if len(c.ApiKey) == 0 {
+		return movies, 0, errors.New("missing ApiKey")
+	}
+
+	t, _ := template.New("MoviesSearchUrl").Parse(c.BaseUrl["Search"])
+	buf := new(bytes.Buffer)
+	t.Execute(buf, q)
+
+	page_limit_t := strconv.Itoa(page_limit)
+	page_t := strconv.Itoa(page)
+
+	v := url.Values{}
+	v.Set("q", q)
+	v.Set("page_limit", page_limit_t)
+	v.Set("page", page_t)
+	v.Set("apikey", c.ApiKey)
+
+	endp := buf.String() + v.Encode()
+
+	data, err := c.Request(endp)
+
+	if err != nil {
+		return movies, 0, err
+	}
+
+	movies, total, err = UnmarshalSearch(data)
+
+	return movies, total, err
 }
