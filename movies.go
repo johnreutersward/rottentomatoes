@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"log"
 	"net/url"
 	"text/template"
 )
@@ -66,12 +65,7 @@ type Links struct {
 
 func UnmarshalMoviesInfo(data []byte) (Movie, error) {
 	var m Movie
-	//m := new(Movie)
 	err := json.Unmarshal(data, &m)
-
-	if err != nil {
-		log.Panic(err)
-	}
 
 	return m, err
 }
@@ -89,6 +83,36 @@ func (c *Client) MoviesInfo(id string) (Movie, error) {
 	t.Execute(buf, id)
 
 	v := url.Values{}
+	v.Set("apikey", c.ApiKey)
+
+	endp := buf.String() + v.Encode()
+
+	data, err := c.Request(endp)
+
+	if err != nil {
+		return movie, err
+	}
+
+	movie, err = UnmarshalMoviesInfo(data)
+
+	return movie, err
+}
+
+func (c *Client) MoviesAlias(id string) (Movie, error) {
+
+	var movie Movie
+
+	if len(c.ApiKey) == 0 {
+		return movie, errors.New("missing ApiKey")
+	}
+
+	t, _ := template.New("MoviesAliasUrl").Parse(c.BaseUrl["MoviesAlias"])
+	buf := new(bytes.Buffer)
+	t.Execute(buf, id)
+
+	v := url.Values{}
+	v.Set("id", id)
+	v.Set("type", "imdb")
 	v.Set("apikey", c.ApiKey)
 
 	endp := buf.String() + v.Encode()
