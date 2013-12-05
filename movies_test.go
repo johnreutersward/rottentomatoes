@@ -260,3 +260,49 @@ func TestUnmarshalReviews(t *testing.T) {
 	}
 
 }
+
+func TestUnmarshalClips(t *testing.T) {
+	data := `{
+		"clips": [{
+	        "title": "Toy Story 3",
+	        "duration": "149",
+	        "thumbnail": "http://content.internetvideoarchive.com/content/photos/3465/14553712_.jpg",
+	        "links": {
+	            "alternate": "http://www.rottentomatoes.com/m/toy_story_3/trailers/11028566"
+	        }
+    	}, {
+	        "title": "Toy Story 3: Meet Ken",
+	        "duration": "102",
+	        "thumbnail": "http://content.internetvideoarchive.com/content/photos/6756/28378422_.jpg",
+	        "links": {
+	            "alternate": "http://www.rottentomatoes.com/m/toy_story_3/trailers/11108601"
+	        }
+    	}]
+    }`
+
+	got, err := UnmarshalClips([]byte(data))
+
+	if err != nil {
+		log.Panic(err)
+	}
+
+	want := []Clip{
+		Clip{
+			Title:     "Toy Story 3",
+			Duration:  "149",
+			Thumbnail: "http://content.internetvideoarchive.com/content/photos/3465/14553712_.jpg",
+			Links:     ClipLinks{Alternate: "http://www.rottentomatoes.com/m/toy_story_3/trailers/11028566"},
+		},
+		Clip{
+			Title:     "Toy Story 3: Meet Ken",
+			Duration:  "102",
+			Thumbnail: "http://content.internetvideoarchive.com/content/photos/6756/28378422_.jpg",
+			Links:     ClipLinks{Alternate: "http://www.rottentomatoes.com/m/toy_story_3/trailers/11108601"},
+		},
+	}
+
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("UnmarshalClips = %+v,\nwant %+v", got, want)
+	}
+
+}

@@ -96,6 +96,17 @@ type ReviewLinks struct {
 	Review string `json:"review"`
 }
 
+type Clip struct {
+	Title     string    `json:"title"`
+	Duration  string    `json:"duration"`
+	Thumbnail string    `json:"thumbnail"`
+	Links     ClipLinks `json:"links"`
+}
+
+type ClipLinks struct {
+	Alternate string `json:"alternate"`
+}
+
 func UnmarshalMoviesInfo(data []byte) (Movie, error) {
 	var m Movie
 	err := json.Unmarshal(data, &m)
@@ -137,6 +148,16 @@ func UnmarshalReviews(data []byte) ([]Review, int, error) {
 	err = json.Unmarshal(*jsond["total"], &t)
 
 	return reviewList, t, err
+}
+
+func UnmarshalClips(data []byte) ([]Clip, error) {
+	var jsond map[string]*json.RawMessage
+	_ = json.Unmarshal(data, &jsond)
+
+	var clipList []Clip
+	err := json.Unmarshal(*jsond["clips"], &clipList)
+
+	return clipList, err
 }
 
 func (c *Client) MoviesInfo(id string) (Movie, error) {
@@ -297,4 +318,32 @@ func (c *Client) MoviesReviews(id string, review_type string, page_limit int, pa
 	reviews, total, err = UnmarshalReviews(data)
 
 	return reviews, total, err
+}
+
+func (c *Client) MoviesClips(id string) ([]Clip, error) {
+
+	var clips []Clip
+
+	if len(c.ApiKey) == 0 {
+		return clips, errors.New("missing ApiKey")
+	}
+
+	t, _ := template.New("MoviesClipsUrl").Parse(c.BaseUrl["MovieClips"])
+	buf := new(bytes.Buffer)
+	t.Execute(buf, id)
+
+	v := url.Values{}
+	v.Set("apikey", c.ApiKey)
+
+	endp := buf.String() + v.Encode()
+
+	data, err := c.Request(endp)
+
+	if err != nil {
+		return clips, err
+	}
+
+	clips, err = UnmarshalClips(data)
+
+	return clips, err
 }
