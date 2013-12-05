@@ -83,8 +83,17 @@ type Links struct {
 	Similar   string `json:"similar"`
 }
 
-type Total struct {
-	Total int `json:"total"`
+type Review struct {
+	Critic      string      `json:"critic"`
+	Date        string      `json:"date"`
+	Freshness   string      `json:"freshness"`
+	Publication string      `json:"publication"`
+	Quote       string      `json:"quote"`
+	Links       ReviewLinks `json:"links"`
+}
+
+type ReviewLinks struct {
+	Review string `json:"review"`
 }
 
 func UnmarshalMoviesInfo(data []byte) (Movie, error) {
@@ -115,6 +124,19 @@ func UnmarshalSearch(data []byte) ([]Movies, int, error) {
 	err = json.Unmarshal(*jsond["total"], &t)
 
 	return movieList, t, err
+}
+
+func UnmarshalReviews(data []byte) ([]Review, int, error) {
+	var jsond map[string]*json.RawMessage
+	_ = json.Unmarshal(data, &jsond)
+
+	var reviewList []Review
+	err := json.Unmarshal(*jsond["reviews"], &reviewList)
+
+	var t int
+	err = json.Unmarshal(*jsond["total"], &t)
+
+	return reviewList, t, err
 }
 
 func (c *Client) MoviesInfo(id string) (Movie, error) {
@@ -239,4 +261,40 @@ func (c *Client) MoviesSearch(q string, page_limit int, page int) ([]Movies, int
 	movies, total, err = UnmarshalSearch(data)
 
 	return movies, total, err
+}
+
+func (c *Client) MoviesReviews(id string, review_type string, page_limit int, page int, country string) ([]Review, int, error) {
+
+	var reviews []Review
+	var total int
+
+	if len(c.ApiKey) == 0 {
+		return reviews, 0, errors.New("missing ApiKey")
+	}
+
+	t, _ := template.New("MovieReviewsUrl").Parse(c.BaseUrl["MovieReviews"])
+	buf := new(bytes.Buffer)
+	t.Execute(buf, id)
+
+	page_limit_t := strconv.Itoa(page_limit)
+	page_t := strconv.Itoa(page)
+
+	v := url.Values{}
+	v.Set("review_type", review_type)
+	v.Set("page_limit", page_limit_t)
+	v.Set("page", page_t)
+	v.Set("country", country)
+	v.Set("apikey", c.ApiKey)
+
+	endp := buf.String() + v.Encode()
+
+	data, err := c.Request(endp)
+
+	if err != nil {
+		return reviews, 0, err
+	}
+
+	reviews, total, err = UnmarshalReviews(data)
+
+	return reviews, total, err
 }

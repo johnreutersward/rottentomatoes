@@ -199,3 +199,64 @@ func TestUnmarshalSearch(t *testing.T) {
 	}
 
 }
+
+func TestUnmarshalReviews(t *testing.T) {
+	data := `{
+		"total": 2,
+    	"reviews": [{
+	        "critic": "Eric Hynes",
+	        "date": "2013-08-04",
+	        "freshness": "fresh",
+	        "publication": "Village Voice",
+	        "quote": "When teenaged Andy plops down on the grass to share his old toys with a shy little girl, the film spikes with sadness and layered pleasure -- a concise, deeply wise expression of the ephemeral that feels real and yet utterly transporting.",
+	        "links": {
+	            "review": "http://www.villagevoice.com/2010-06-15/film/toys-are-us-in-toy-story-3/full/"
+	        }
+        }, {
+	        "critic": "David Denby",
+	        "date": "2013-08-04",
+	        "freshness": "fresh",
+	        "publication": "New Yorker",
+	        "quote": "There are many sweet laughs and joking allusions to horror and prison-break movies, but the Pixar gang gets at the most primary fear -- being cast off and no longer of use.",
+	        "links": {
+	            "review": "http://www.newyorker.com/arts/reviews/film/toy_story_3_unkrich"
+	        }
+        }]
+    }`
+
+	got, total, err := UnmarshalReviews([]byte(data))
+
+	if err != nil {
+		log.Panic(err)
+	}
+
+	want_total := 2
+
+	want := []Review{
+		Review{
+			Critic:      "Eric Hynes",
+			Date:        "2013-08-04",
+			Freshness:   "fresh",
+			Publication: "Village Voice",
+			Quote:       "When teenaged Andy plops down on the grass to share his old toys with a shy little girl, the film spikes with sadness and layered pleasure -- a concise, deeply wise expression of the ephemeral that feels real and yet utterly transporting.",
+			Links:       ReviewLinks{Review: "http://www.villagevoice.com/2010-06-15/film/toys-are-us-in-toy-story-3/full/"},
+		},
+		Review{
+			Critic:      "David Denby",
+			Date:        "2013-08-04",
+			Freshness:   "fresh",
+			Publication: "New Yorker",
+			Quote:       "There are many sweet laughs and joking allusions to horror and prison-break movies, but the Pixar gang gets at the most primary fear -- being cast off and no longer of use.",
+			Links:       ReviewLinks{Review: "http://www.newyorker.com/arts/reviews/film/toy_story_3_unkrich"},
+		},
+	}
+
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("UnmarshalReviews = %+v,\nwant %+v", got, want)
+	}
+
+	if total != want_total {
+		t.Errorf("UnmarshalReviews/total = %+v,\nwant %+v", total, want_total)
+	}
+
+}
