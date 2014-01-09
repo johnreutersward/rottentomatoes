@@ -9,7 +9,6 @@ func TestApiKey(t *testing.T) {
 	if c.ApiKey != apikey {
 		t.Errorf("NewClient(%v) = %v, want %v", apikey, c.ApiKey, apikey)
 	}
-
 }
 
 func TestBaseUrls(t *testing.T) {
