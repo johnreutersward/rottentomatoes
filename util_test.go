@@ -57,13 +57,10 @@ func TestPrepareUrl(t *testing.T) {
 
 	q := map[string]string{
 		"review_type": "top_critic",
-		"page_limit":  "5",
-		"page":        "1",
-		"country":     "us",
 	}
 
 	got := c.prepareUrl(q)
-	want := "apikey=" + os.Getenv("ROTTENTOMATOES_APIKEY") + "&country=us&page=1&page_limit=5&review_type=top_critic"
+	want := "apikey=" + os.Getenv("ROTTENTOMATOES_APIKEY") + "&review_type=top_critic"
 
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("prepareUrl = %+v,\nwant %+v", got, want)
