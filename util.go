@@ -25,14 +25,14 @@ func (c *client) prepareUrl(p map[string]string) string {
 	return urlVals.Encode()
 }
 
-func UnmarshalMoviesInfo(data []byte) (Movie, error) {
+func unmarshalMoviesInfo(data []byte) (Movie, error) {
 	var m Movie
 	err := json.Unmarshal(data, &m)
 
 	return m, err
 }
 
-func UnmarshalCastInfo(data []byte) ([]Cast, error) {
+func unmarshalCastInfo(data []byte) ([]Cast, error) {
 	var jsond map[string]*json.RawMessage
 	_ = json.Unmarshal(data, &jsond)
 
@@ -42,7 +42,7 @@ func UnmarshalCastInfo(data []byte) ([]Cast, error) {
 	return castList, err
 }
 
-func UnmarshalMovies(data []byte) ([]Movie_, error) {
+func unmarshalMovies(data []byte) ([]Movie_, error) {
 	var jsond map[string]*json.RawMessage
 	_ = json.Unmarshal(data, &jsond)
 
@@ -52,7 +52,7 @@ func UnmarshalMovies(data []byte) ([]Movie_, error) {
 	return movieList, err
 }
 
-func UnmarshalSearch(data []byte) ([]Movie_, int, error) {
+func unmarshalSearch(data []byte) ([]Movie_, int, error) {
 	var jsond map[string]*json.RawMessage
 	_ = json.Unmarshal(data, &jsond)
 
@@ -65,7 +65,7 @@ func UnmarshalSearch(data []byte) ([]Movie_, int, error) {
 	return movieList, t, err
 }
 
-func UnmarshalReviews(data []byte) ([]Review, int, error) {
+func unmarshalReviews(data []byte) ([]Review, int, error) {
 	var jsond map[string]*json.RawMessage
 	_ = json.Unmarshal(data, &jsond)
 
@@ -78,7 +78,7 @@ func UnmarshalReviews(data []byte) ([]Review, int, error) {
 	return reviewList, t, err
 }
 
-func UnmarshalClips(data []byte) ([]Clip, error) {
+func unmarshalClips(data []byte) ([]Clip, error) {
 	var jsond map[string]*json.RawMessage
 	_ = json.Unmarshal(data, &jsond)
 

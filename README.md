@@ -31,7 +31,7 @@ func main() {
 	rt, _ := rottentomatoes.NewClient()
 
 	// Get info using movie id
-	m, err := rt.MoviesInfo("14281")
+	m, err := rt.MovieInfo("14281")
 
 	if err != nil {
 		log.Fatal(err)

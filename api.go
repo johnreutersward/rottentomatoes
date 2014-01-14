@@ -1,13 +1,14 @@
 package rottentomatoes
 
 import (
-	"bytes"
-	"net/url"
 	"strconv"
-	"text/template"
+	"time"
 )
 
+// MovieInfo returns movie information using id of movie.
 func (c *client) MovieInfo(id string) (movie Movie, err error) {
+
+	time.Sleep(1 * time.Second)
 
 	endpoint := c.getEndpoint("MovieInfo", id)
 	urlParams := c.prepareUrl(nil)
@@ -17,11 +18,14 @@ func (c *client) MovieInfo(id string) (movie Movie, err error) {
 		return
 	}
 
-	movie, err = UnmarshalMoviesInfo(data)
+	movie, err = unmarshalMoviesInfo(data)
 	return
 }
 
+// MovieCast returns the abridged cast members of a movie.
 func (c *client) MovieCast(id string) (castList []Cast, err error) {
+
+	time.Sleep(1 * time.Second)
 
 	endpoint := c.getEndpoint("MovieCast", id)
 	urlParams := c.prepareUrl(nil)
@@ -31,11 +35,14 @@ func (c *client) MovieCast(id string) (castList []Cast, err error) {
 		return
 	}
 
-	castList, err = UnmarshalCastInfo(data)
+	castList, err = unmarshalCastInfo(data)
 	return
 }
 
+// MovieClips returns clips, trailers etc. for a movie.
 func (c *client) MovieClips(id string) (clips []Clip, err error) {
+
+	time.Sleep(1 * time.Second)
 
 	endpoint := c.getEndpoint("MovieClips", id)
 	urlParams := c.prepareUrl(nil)
@@ -45,122 +52,106 @@ func (c *client) MovieClips(id string) (clips []Clip, err error) {
 		return
 	}
 
-	clips, err = UnmarshalClips(data)
+	clips, err = unmarshalClips(data)
 	return
 }
 
-func (c *client) MoviesReviews(id string, review_type string, page_limit int, page int, country string) ([]Review, int, error) {
+// MovieReviews returns reviews for a movie.
+func (c *client) MovieReviews(id string, review_type string, page_limit int, page int, country string) (reviews []Review, total int, err error) {
 
-	var reviews []Review
-	var total int
+	time.Sleep(1 * time.Second)
 
-	t, _ := template.New("MovieReviewsUrl").Parse(c.BaseUrl["MovieReviews"])
-	buf := new(bytes.Buffer)
-	t.Execute(buf, id)
-
+	endpoint := c.getEndpoint("MovieReviews", id)
 	page_limit_t := strconv.Itoa(page_limit)
 	page_t := strconv.Itoa(page)
 
-	v := url.Values{}
-	v.Set("review_type", review_type)
-	v.Set("page_limit", page_limit_t)
-	v.Set("page", page_t)
-	v.Set("country", country)
-	v.Set("apikey", c.ApiKey)
-
-	endp := buf.String() + v.Encode()
-
-	data, err := c.request(endp)
-
-	if err != nil {
-		return reviews, 0, err
+	q := map[string]string{
+		"review_type": review_type,
+		"page_limit":  page_limit_t,
+		"page":        page_t,
+		"country":     country,
 	}
 
-	reviews, total, err = UnmarshalReviews(data)
+	urlParams := c.prepareUrl(q)
+	data, err := c.request(endpoint + urlParams)
 
-	return reviews, total, err
+	if err != nil {
+		return
+	}
+
+	reviews, total, err = unmarshalReviews(data)
+	return
 }
 
-func (c *client) MoviesSimilar(id string, limit int) ([]Movie_, error) {
+// MovieSimilar returns similar movies.
+func (c *client) MovieSimilar(id string, limit int) (movies []Movie_, err error) {
 
-	var movies []Movie_
+	time.Sleep(1 * time.Second)
 
-	t, _ := template.New("MoviesSimilarUrl").Parse(c.BaseUrl["MoviesSimilar"])
-	buf := new(bytes.Buffer)
-	t.Execute(buf, id)
-
+	endpoint := c.getEndpoint("MovieSimilar", id)
 	limit_t := strconv.Itoa(limit)
 
-	v := url.Values{}
-	v.Set("limit", limit_t)
-	v.Set("apikey", c.ApiKey)
-
-	endp := buf.String() + v.Encode()
-
-	data, err := c.request(endp)
-
-	if err != nil {
-		return movies, err
+	q := map[string]string{
+		"limit": limit_t,
 	}
 
-	movies, err = UnmarshalMovies(data)
-
-	return movies, err
-}
-
-func (c *client) MoviesAlias(id string) (Movie, error) {
-
-	var movie Movie
-
-	t, _ := template.New("MoviesAliasUrl").Parse(c.BaseUrl["MoviesAlias"])
-	buf := new(bytes.Buffer)
-	t.Execute(buf, id)
-
-	v := url.Values{}
-	v.Set("id", id)
-	v.Set("type", "imdb")
-	v.Set("apikey", c.ApiKey)
-
-	endp := buf.String() + v.Encode()
-
-	data, err := c.request(endp)
+	urlParams := c.prepareUrl(q)
+	data, err := c.request(endpoint + urlParams)
 
 	if err != nil {
-		return movie, err
+		return
 	}
 
-	movie, err = UnmarshalMoviesInfo(data)
-
-	return movie, err
+	movies, err = unmarshalMovies(data)
+	return
 }
 
-func (c *client) MoviesSearch(q string, page_limit int, page int) ([]Movie_, int, error) {
+// MovieAlias returns movie using alternative id, such as IMDB id.
+func (c *client) MovieAlias(id string) (movie Movie, err error) {
 
-	var movies []Movie_
-	var total int
+	time.Sleep(1 * time.Second)
 
-	t, _ := template.New("MoviesSearchUrl").Parse(c.BaseUrl["Search"])
-	buf := new(bytes.Buffer)
-	t.Execute(buf, q)
+	endpoint := c.getEndpoint("MovieAlias", id)
+
+	q := map[string]string{
+		"id":   id,
+		"type": "imdb",
+	}
+
+	urlParams := c.prepareUrl(q)
+	data, err := c.request(endpoint + urlParams)
+
+	if err != nil {
+		return
+	}
+
+	movie, err = unmarshalMoviesInfo(data)
+	return
+}
+
+// MoviesSearch returns a list movies that matches the query string.
+func (c *client) MoviesSearch(q string, page_limit int, page int) (movies []Movie_, total int, err error) {
+
+	time.Sleep(1 * time.Second)
+
+	endpoint := c.getEndpoint("MoviesSearch", "")
 
 	page_limit_t := strconv.Itoa(page_limit)
 	page_t := strconv.Itoa(page)
 
-	v := url.Values{}
-	v.Set("q", q)
-	v.Set("page_limit", page_limit_t)
-	v.Set("page", page_t)
-	v.Set("apikey", c.ApiKey)
-
-	endp := buf.String() + v.Encode()
-
-	data, err := c.request(endp)
-
-	if err != nil {
-		return movies, 0, err
+	queryParams := map[string]string{
+		"q":          q,
+		"page_limit": page_limit_t,
+		"page":       page_t,
 	}
 
-	movies, total, err = UnmarshalSearch(data)
+	urlParams := c.prepareUrl(queryParams)
+	data, err := c.request(endpoint + urlParams)
 
-	return movies, total, err
+	if err != nil {
+		return
+	}
+
+	movies, total, err = unmarshalSearch(data)
+	return
 }
