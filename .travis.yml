@@ -1,1 +1,4 @@
 language: go
+env:
+  global:
+    secure: hmz9633m6XbWm7CydPeQmzAFgyKtrY6F3XBOlilkabcyWhkRe8NxY1WRjx8bcPxNPvnA5LnFDPzn/e7xFdj084bPEEa+Wi64rztkvxCOuNJrZIfHr33L9wE3jH0r7J8HP2/rLGD22knnPV2Alj+RMUDe5silJCnz/xLQN0fZ37s=
