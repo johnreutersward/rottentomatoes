@@ -31,13 +31,13 @@ func NewClient() (c *client, err error) {
 	c = &client{
 		ApiKey: apikey,
 		BaseUrl: map[string]string{
-			"MoviesInfo":    "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}.json?",
-			"CastInfo":      "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/cast.json?",
-			"MovieClips":    "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/clips.json?",
-			"MovieReviews":  "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/reviews.json?",
-			"MoviesSimilar": "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/similar.json?",
-			"MoviesAlias":   "http://api.rottentomatoes.com/api/public/v1.0/movie_alias.json?",
-			"Search":        "http://api.rottentomatoes.com/api/public/v1.0/movies.json?",
+			"MovieInfo":    "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}.json?",
+			"MovieCast":    "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/cast.json?",
+			"MovieClips":   "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/clips.json?",
+			"MovieReviews": "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/reviews.json?",
+			"MovieSimilar": "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/similar.json?",
+			"MovieAlias":   "http://api.rottentomatoes.com/api/public/v1.0/movie_alias.json?",
+			"MoviesSearch": "http://api.rottentomatoes.com/api/public/v1.0/movies.json?",
 		},
 	}
 	return
@@ -48,7 +48,7 @@ func (c *client) request(endp string) (data []byte, err error) {
 	resp, err := http.Get(endp)
 
 	if err != nil {
-		return nil, err
+		return
 	}
 
 	defer resp.Body.Close()
@@ -59,9 +59,9 @@ func (c *client) request(endp string) (data []byte, err error) {
 	_ = json.Unmarshal(data, &e)
 
 	if len(e.Error) != 0 {
-		return nil, errors.New(e.Error)
+		err = errors.New(e.Error)
+		return
 	}
 
-	return data, nil
-
+	return
 }

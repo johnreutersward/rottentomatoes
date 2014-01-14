@@ -153,9 +153,9 @@ func TestUnmarshalMovies(t *testing.T) {
 		log.Panic(err)
 	}
 
-	want := []Movies{
-		Movies{Id: "104762093", Title: "Fargo", Year: 1996},
-		Movies{Id: "12776", Title: "O Brother, Where Art Thou?", Year: 2000},
+	want := []Movie_{
+		Movie_{Id: "104762093", Title: "Fargo", Year: 1996},
+		Movie_{Id: "12776", Title: "O Brother, Where Art Thou?", Year: 2000},
 	}
 
 	if !reflect.DeepEqual(got, want) {
@@ -185,9 +185,9 @@ func TestUnmarshalSearch(t *testing.T) {
 	}
 
 	want_total := 2
-	want := []Movies{
-		Movies{Id: "104762093", Title: "Fargo", Year: 1996},
-		Movies{Id: "770717155", Title: "Fargo Express", Year: 1932},
+	want := []Movie_{
+		Movie_{Id: "104762093", Title: "Fargo", Year: 1996},
+		Movie_{Id: "770717155", Title: "Fargo Express", Year: 1932},
 	}
 
 	if !reflect.DeepEqual(got, want) {
