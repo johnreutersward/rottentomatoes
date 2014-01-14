@@ -9,7 +9,7 @@ import (
 	"os"
 )
 
-type client struct {
+type Client struct {
 	ApiKey  string
 	BaseUrl map[string]string
 }
@@ -19,7 +19,7 @@ type apiError struct {
 }
 
 // NewClient creates a rottentomatoes client instance.
-func NewClient() (c *client, err error) {
+func NewClient() (c *Client, err error) {
 
 	apikey := os.Getenv("ROTTENTOMATOES_APIKEY")
 
@@ -28,7 +28,7 @@ func NewClient() (c *client, err error) {
 		return
 	}
 
-	c = &client{
+	c = &Client{
 		ApiKey: apikey,
 		BaseUrl: map[string]string{
 			"MovieInfo":    "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}.json?",
@@ -43,7 +43,7 @@ func NewClient() (c *client, err error) {
 	return
 }
 
-func (c *client) request(endp string) (data []byte, err error) {
+func (c *Client) request(endp string) (data []byte, err error) {
 
 	resp, err := http.Get(endp)
 

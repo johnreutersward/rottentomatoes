@@ -7,14 +7,14 @@ import (
 	"text/template"
 )
 
-func (c *client) getEndpoint(tmplName string, id string) string {
+func (c *Client) getEndpoint(tmplName string, id string) string {
 	t, _ := template.New(tmplName).Parse(c.BaseUrl[tmplName])
 	buf := new(bytes.Buffer)
 	t.Execute(buf, id)
 	return buf.String()
 }
 
-func (c *client) prepareUrl(p map[string]string) string {
+func (c *Client) prepareUrl(p map[string]string) string {
 
 	urlVals := url.Values{}
 	urlVals.Set("apikey", c.ApiKey)
