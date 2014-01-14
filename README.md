@@ -1,6 +1,6 @@
 # rotttentomatoes
 
-[![Build Status](https://goci.herokuapp.com/project/image/github.com/rojters/rottentomatoes)] (http://goci.me/project/github.com/rojters/rottentomatoes) 
+[![travis-ci status](https://api.travis-ci.org/rojters/rottentomatoes.png)](https://travis-ci.org/rojters/rottentomatoes) [![GoDoc](https://godoc.org/github.com/rojters/rottentomatoes?status.png)](https://godoc.org/github.com/rojters/rottentomatoes) 
 
 Rotten Tomatoes API wrapper for Go
 
