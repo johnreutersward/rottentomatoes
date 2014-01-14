@@ -3,7 +3,6 @@ package rottentomatoes
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"net/url"
 	"strconv"
 	"text/template"
@@ -160,13 +159,9 @@ func UnmarshalClips(data []byte) ([]Clip, error) {
 	return clipList, err
 }
 
-func (c *Client) MoviesInfo(id string) (Movie, error) {
+func (c *client) MoviesInfo(id string) (Movie, error) {
 
 	var movie Movie
-
-	if len(c.ApiKey) == 0 {
-		return movie, errors.New("missing ApiKey")
-	}
 
 	t, _ := template.New("MoviesInfoUrl").Parse(c.BaseUrl["MoviesInfo"])
 	buf := new(bytes.Buffer)
@@ -177,7 +172,7 @@ func (c *Client) MoviesInfo(id string) (Movie, error) {
 
 	endp := buf.String() + v.Encode()
 
-	data, err := c.Request(endp)
+	data, err := c.request(endp)
 
 	if err != nil {
 		return movie, err
@@ -188,13 +183,9 @@ func (c *Client) MoviesInfo(id string) (Movie, error) {
 	return movie, err
 }
 
-func (c *Client) MoviesSimilar(id string, limit int) ([]Movies, error) {
+func (c *client) MoviesSimilar(id string, limit int) ([]Movies, error) {
 
 	var movies []Movies
-
-	if len(c.ApiKey) == 0 {
-		return movies, errors.New("missing ApiKey")
-	}
 
 	t, _ := template.New("MoviesSimilarUrl").Parse(c.BaseUrl["MoviesSimilar"])
 	buf := new(bytes.Buffer)
@@ -208,7 +199,7 @@ func (c *Client) MoviesSimilar(id string, limit int) ([]Movies, error) {
 
 	endp := buf.String() + v.Encode()
 
-	data, err := c.Request(endp)
+	data, err := c.request(endp)
 
 	if err != nil {
 		return movies, err
@@ -219,13 +210,9 @@ func (c *Client) MoviesSimilar(id string, limit int) ([]Movies, error) {
 	return movies, err
 }
 
-func (c *Client) MoviesAlias(id string) (Movie, error) {
+func (c *client) MoviesAlias(id string) (Movie, error) {
 
 	var movie Movie
-
-	if len(c.ApiKey) == 0 {
-		return movie, errors.New("missing ApiKey")
-	}
 
 	t, _ := template.New("MoviesAliasUrl").Parse(c.BaseUrl["MoviesAlias"])
 	buf := new(bytes.Buffer)
@@ -238,7 +225,7 @@ func (c *Client) MoviesAlias(id string) (Movie, error) {
 
 	endp := buf.String() + v.Encode()
 
-	data, err := c.Request(endp)
+	data, err := c.request(endp)
 
 	if err != nil {
 		return movie, err
@@ -249,14 +236,10 @@ func (c *Client) MoviesAlias(id string) (Movie, error) {
 	return movie, err
 }
 
-func (c *Client) MoviesSearch(q string, page_limit int, page int) ([]Movies, int, error) {
+func (c *client) MoviesSearch(q string, page_limit int, page int) ([]Movies, int, error) {
 
 	var movies []Movies
 	var total int
-
-	if len(c.ApiKey) == 0 {
-		return movies, 0, errors.New("missing ApiKey")
-	}
 
 	t, _ := template.New("MoviesSearchUrl").Parse(c.BaseUrl["Search"])
 	buf := new(bytes.Buffer)
@@ -273,7 +256,7 @@ func (c *Client) MoviesSearch(q string, page_limit int, page int) ([]Movies, int
 
 	endp := buf.String() + v.Encode()
 
-	data, err := c.Request(endp)
+	data, err := c.request(endp)
 
 	if err != nil {
 		return movies, 0, err
@@ -284,14 +267,10 @@ func (c *Client) MoviesSearch(q string, page_limit int, page int) ([]Movies, int
 	return movies, total, err
 }
 
-func (c *Client) MoviesReviews(id string, review_type string, page_limit int, page int, country string) ([]Review, int, error) {
+func (c *client) MoviesReviews(id string, review_type string, page_limit int, page int, country string) ([]Review, int, error) {
 
 	var reviews []Review
 	var total int
-
-	if len(c.ApiKey) == 0 {
-		return reviews, 0, errors.New("missing ApiKey")
-	}
 
 	t, _ := template.New("MovieReviewsUrl").Parse(c.BaseUrl["MovieReviews"])
 	buf := new(bytes.Buffer)
@@ -309,7 +288,7 @@ func (c *Client) MoviesReviews(id string, review_type string, page_limit int, pa
 
 	endp := buf.String() + v.Encode()
 
-	data, err := c.Request(endp)
+	data, err := c.request(endp)
 
 	if err != nil {
 		return reviews, 0, err
@@ -320,13 +299,9 @@ func (c *Client) MoviesReviews(id string, review_type string, page_limit int, pa
 	return reviews, total, err
 }
 
-func (c *Client) MoviesClips(id string) ([]Clip, error) {
+func (c *client) MoviesClips(id string) ([]Clip, error) {
 
 	var clips []Clip
-
-	if len(c.ApiKey) == 0 {
-		return clips, errors.New("missing ApiKey")
-	}
 
 	t, _ := template.New("MoviesClipsUrl").Parse(c.BaseUrl["MovieClips"])
 	buf := new(bytes.Buffer)
@@ -337,7 +312,7 @@ func (c *Client) MoviesClips(id string) ([]Clip, error) {
 
 	endp := buf.String() + v.Encode()
 
-	data, err := c.Request(endp)
+	data, err := c.request(endp)
 
 	if err != nil {
 		return clips, err

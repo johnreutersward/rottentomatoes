@@ -1,55 +1,67 @@
+// Package rottentomatoes implements a wrapper for the Rotten Tomatoes Web Api.
 package rottentomatoes
 
 import (
+	"encoding/json"
+	"errors"
 	"io/ioutil"
-    "net/http"
-    "encoding/json"
-    "errors"
+	"net/http"
+	"os"
 )
 
-type Client struct {
-	ApiKey string
+type client struct {
+	ApiKey  string
 	BaseUrl map[string]string
 }
 
-type ApiError struct {
-    Error string `json:"error"`
+type apiError struct {
+	Error string `json:"error"`
 }
 
-func NewClient(apikey string) *Client {
-	c := &Client {
+// NewClient creates a rottentomatoes client instance.
+func NewClient() (c *client, err error) {
+
+	apikey := os.Getenv("ROTTENTOMATOES_APIKEY")
+
+	if len(apikey) == 0 {
+		err = errors.New("missing api key")
+		return
+	}
+
+	c = &client{
 		ApiKey: apikey,
-		BaseUrl:  map[string]string {
-			"MoviesInfo": "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}.json?",
-			"CastInfo": "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/cast.json?",
-			"MovieClips": "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/clips.json?",
-			"MovieReviews": "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/reviews.json?",
+		BaseUrl: map[string]string{
+			"MoviesInfo":    "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}.json?",
+			"CastInfo":      "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/cast.json?",
+			"MovieClips":    "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/clips.json?",
+			"MovieReviews":  "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/reviews.json?",
 			"MoviesSimilar": "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/similar.json?",
-			"MoviesAlias": "http://api.rottentomatoes.com/api/public/v1.0/movie_alias.json?",
-			"Search": "http://api.rottentomatoes.com/api/public/v1.0/movies.json?",
+			"MoviesAlias":   "http://api.rottentomatoes.com/api/public/v1.0/movie_alias.json?",
+			"Search":        "http://api.rottentomatoes.com/api/public/v1.0/movies.json?",
 		},
 	}
-	return c
+	return
 }
 
-func (c *Client) Request(endp string) ([]byte, error) {
-	
+func (c *client) request(endp string) (data []byte, err error) {
+
 	resp, err := http.Get(endp)
-    if err != nil {
-        return nil, err
-    }
 
-    defer resp.Body.Close()
+	if err != nil {
+		return nil, err
+	}
 
-    data, _ := ioutil.ReadAll(resp.Body)
-    
-    var e ApiError
-    _ = json.Unmarshal(data, &e)
+	defer resp.Body.Close()
 
-    if len(e.Error) != 0 {
-        return nil, errors.New(e.Error)
-    }
-    
-    return data, nil
+	data, _ = ioutil.ReadAll(resp.Body)
+
+	var e apiError
+	_ = json.Unmarshal(data, &e)
+
+	if len(e.Error) != 0 {
+		return nil, errors.New(e.Error)
+	}
+
+	return data, nil
 
 }

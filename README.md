@@ -8,6 +8,8 @@ Rotten Tomatoes API wrapper for Go
 
 Start by applying for an API key at http://developer.rottentomatoes.com/ (it's free).
 
+Store the API key in a enviromental variable called `ROTTENTOMATOES_APIKEY`.
+
 Install by issuing: 
 
 ```bash
@@ -26,7 +28,7 @@ import (
 )
 
 func main() {
-	rt := rottentomatoes.NewClient("YOUR_API_KEY")
+	rt, _ := rottentomatoes.NewClient()
 
 	// Get info using movie id
 	m, err := rt.MoviesInfo("14281")

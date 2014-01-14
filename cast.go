@@ -3,7 +3,6 @@ package rottentomatoes
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"net/url"
 	"text/template"
 )
@@ -24,11 +23,7 @@ func UnmarshalCastInfo(data []byte) ([]Cast, error) {
 	return castList, err
 }
 
-func (c *Client) CastInfo(id string) ([]Cast, error) {
-
-	if len(c.ApiKey) == 0 {
-		return nil, errors.New("missing ApiKey")
-	}
+func (c *client) CastInfo(id string) ([]Cast, error) {
 
 	t, _ := template.New("CastInfoUrl").Parse(c.BaseUrl["CastInfo"])
 	buf := new(bytes.Buffer)
@@ -39,7 +34,7 @@ func (c *Client) CastInfo(id string) ([]Cast, error) {
 
 	endp := buf.String() + v.Encode()
 
-	data, err := c.Request(endp)
+	data, err := c.request(endp)
 
 	if err != nil {
 		return nil, err
