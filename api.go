@@ -184,3 +184,25 @@ func (c *Client) InTheatersMovies(page_limit int, page int, country string) (mov
 	movies, total, err = unmarshalSearch(data)
 	return
 }
+
+// OpeningMovies, Retrieves current opening movies.
+func (c *Client) OpeningMovies(limit int, country string) (movies []Movie_, err error) {
+
+	endpoint := c.getEndpoint("OpeningMovies", "")
+	limit_t := strconv.Itoa(limit)
+
+	q := map[string]string{
+		"limit":   limit_t,
+		"country": country,
+	}
+
+	urlParams := c.prepareUrl(q)
+	data, err := c.request(endpoint + urlParams)
+
+	if err != nil {
+		return
+	}
+
+	movies, err = unmarshalMovies(data)
+	return
+}

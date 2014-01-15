@@ -142,7 +142,7 @@ func TestBoxOfficeMovies(t *testing.T) {
 	time.Sleep(1 * time.Second)
 
 	c, _ := NewClient()
-	m, err := c.BoxOfficeMovies(16, "us")
+	m, err := c.BoxOfficeMovies(1, "us")
 
 	if err != nil {
 		t.Errorf("error not nil: %+v", err)
@@ -159,7 +159,7 @@ func TestInTheatersMovies(t *testing.T) {
 	time.Sleep(1 * time.Second)
 
 	c, _ := NewClient()
-	m, total, err := c.InTheatersMovies(16, 1, "us")
+	m, total, err := c.InTheatersMovies(1, 1, "us")
 
 	if err != nil {
 		t.Errorf("error not nil: %+v", err)
@@ -173,5 +173,22 @@ func TestInTheatersMovies(t *testing.T) {
 
 	if got == "" {
 		t.Errorf("InTheatersMovies title empty")
+	}
+}
+
+func TestOpeningMovies(t *testing.T) {
+	time.Sleep(1 * time.Second)
+
+	c, _ := NewClient()
+	m, err := c.OpeningMovies(1, "us")
+
+	if err != nil {
+		t.Errorf("error not nil: %+v", err)
+	}
+
+	got := m[0].Synopsis
+
+	if got == "" {
+		t.Errorf("BoxOfficeMovies Synopsis empty")
 	}
 }

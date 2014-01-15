@@ -33,6 +33,7 @@ func NewClient() (c *Client, err error) {
 		BaseUrl: map[string]string{
 			"BoxOfficeMovies":  "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?",
 			"InTheatersMovies": "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/in_theaters.json?",
+			"OpeningMovies":    "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/opening.json?",
 			"MovieInfo":        "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}.json?",
 			"MovieCast":        "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/cast.json?",
 			"MovieClips":       "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/clips.json?",
