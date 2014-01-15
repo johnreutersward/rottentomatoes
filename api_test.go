@@ -247,3 +247,20 @@ func TestCurrentReleaseDVDs(t *testing.T) {
 		t.Errorf("CurrentReleaseDVDs title empty")
 	}
 }
+
+func TestNewReleaseDVDs(t *testing.T) {
+	time.Sleep(1 * time.Second)
+
+	c, _ := NewClient()
+	m, _, err := c.NewReleaseDVDs(1, 1, "us")
+
+	if err != nil {
+		t.Errorf("error not nil: %+v", err)
+	}
+
+	got := m[0].Title
+
+	if got == "" {
+		t.Errorf("NewReleaseDVDs title empty")
+	}
+}
