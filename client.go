@@ -38,6 +38,7 @@ func NewClient() (c *Client, err error) {
 			"TopRentals":         "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?",
 			"CurrentReleaseDVDs": "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/current_releases.json?",
 			"NewReleaseDVDs":     "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/new_releases.json?",
+			"UpcomingDVDs":       "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/upcoming.json?",
 			"MovieInfo":          "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}.json?",
 			"MovieCast":          "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/cast.json?",
 			"MovieClips":         "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/clips.json?",

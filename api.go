@@ -2,7 +2,7 @@ package rottentomatoes
 
 import "strconv"
 
-// MovieInfo returns movie information using id of movie.
+// MovieInfo, Detailed information on a specific movie specified by Id.
 func (c *Client) MovieInfo(id string) (movie Movie, err error) {
 
 	endpoint := c.getEndpoint("MovieInfo", id)
@@ -17,7 +17,7 @@ func (c *Client) MovieInfo(id string) (movie Movie, err error) {
 	return
 }
 
-// MovieCast returns the abridged cast members of a movie.
+// MovieCast, Pulls the complete movie cast for a movie.
 func (c *Client) MovieCast(id string) (castList []Cast, err error) {
 
 	endpoint := c.getEndpoint("MovieCast", id)
@@ -32,7 +32,7 @@ func (c *Client) MovieCast(id string) (castList []Cast, err error) {
 	return
 }
 
-// MovieClips returns clips, trailers etc. for a movie.
+// MovieClips, Related movie clips and trailers for a movie.
 func (c *Client) MovieClips(id string) (clips []Clip, err error) {
 
 	endpoint := c.getEndpoint("MovieClips", id)
@@ -47,7 +47,7 @@ func (c *Client) MovieClips(id string) (clips []Clip, err error) {
 	return
 }
 
-// MovieReviews returns reviews for a movie.
+// MovieReviews, Retrieves the reviews for a movie. Results are paginated if they go past the specified page limit.
 func (c *Client) MovieReviews(id string, review_type string, page_limit int, page int, country string) (reviews []Review, total int, err error) {
 
 	endpoint := c.getEndpoint("MovieReviews", id)
@@ -93,7 +93,7 @@ func (c *Client) MovieSimilar(id string, limit int) (movies []Movie_, err error)
 	return
 }
 
-// MovieAlias returns movie using alternative id, such as IMDB id.
+// MovieAlias, Provides a movie lookup by an id from a different vendor. Only supports imdb lookup at this time.
 func (c *Client) MovieAlias(id string) (movie Movie, err error) {
 
 	endpoint := c.getEndpoint("MovieAlias", id)
@@ -281,6 +281,30 @@ func (c *Client) CurrentReleaseDVDs(page_limit int, page int, country string) (m
 func (c *Client) NewReleaseDVDs(page_limit int, page int, country string) (movies []Movie_, total int, err error) {
 
 	endpoint := c.getEndpoint("NewReleaseDVDs", "")
+	page_limit_t := strconv.Itoa(page_limit)
+	page_t := strconv.Itoa(page)
+
+	q := map[string]string{
+		"page_limit": page_limit_t,
+		"page":       page_t,
+		"country":    country,
+	}
+
+	urlParams := c.prepareUrl(q)
+	data, err := c.request(endpoint + urlParams)
+
+	if err != nil {
+		return
+	}
+
+	movies, total, err = unmarshalSearch(data)
+	return
+}
+
+// UpcomingDVDs, Retrieves upcoming release dvds. Results are paginated if they go past the specified page limit.
+func (c *Client) UpcomingDVDs(page_limit int, page int, country string) (movies []Movie_, total int, err error) {
+
+	endpoint := c.getEndpoint("UpcomingDVDs", "")
 	page_limit_t := strconv.Itoa(page_limit)
 	page_t := strconv.Itoa(page)
 
