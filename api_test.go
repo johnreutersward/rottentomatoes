@@ -3,11 +3,19 @@ package rottentomatoes
 import (
 	"reflect"
 	"testing"
+	"time"
 )
 
-func TestMovieInfo(t *testing.T) {
-	c, _ := NewClient()
+/*
+There is a 1 second delay for each test,
+this is because the Rotten Tomatoes API enforces
+a hard limit on the number of simultaneous connections.
+*/
 
+func TestMovieInfo(t *testing.T) {
+	time.Sleep(1 * time.Second)
+
+	c, _ := NewClient()
 	m, err := c.MovieInfo("14281")
 
 	if err != nil {
@@ -23,8 +31,9 @@ func TestMovieInfo(t *testing.T) {
 }
 
 func TestMovieCast(t *testing.T) {
-	c, _ := NewClient()
+	time.Sleep(1 * time.Second)
 
+	c, _ := NewClient()
 	cast, err := c.MovieCast("14281")
 
 	if err != nil {
@@ -40,8 +49,9 @@ func TestMovieCast(t *testing.T) {
 }
 
 func TestMovieClips(t *testing.T) {
-	c, _ := NewClient()
+	time.Sleep(1 * time.Second)
 
+	c, _ := NewClient()
 	clips, err := c.MovieClips("14281")
 
 	if err != nil {
@@ -57,8 +67,9 @@ func TestMovieClips(t *testing.T) {
 }
 
 func TestMovieReviews(t *testing.T) {
-	c, _ := NewClient()
+	time.Sleep(1 * time.Second)
 
+	c, _ := NewClient()
 	reviews, _, err := c.MovieReviews("14281", "top_critic", 5, 1, "us")
 
 	if err != nil {
@@ -74,8 +85,9 @@ func TestMovieReviews(t *testing.T) {
 }
 
 func TestMovieSimilar(t *testing.T) {
-	c, _ := NewClient()
+	time.Sleep(1 * time.Second)
 
+	c, _ := NewClient()
 	similar, err := c.MovieSimilar("14281", 5)
 
 	if err != nil {
@@ -91,8 +103,9 @@ func TestMovieSimilar(t *testing.T) {
 }
 
 func TestMovieAlias(t *testing.T) {
-	c, _ := NewClient()
+	time.Sleep(1 * time.Second)
 
+	c, _ := NewClient()
 	m, err := c.MovieAlias("0118715")
 
 	if err != nil {
@@ -108,8 +121,9 @@ func TestMovieAlias(t *testing.T) {
 }
 
 func TestMoviesSearch(t *testing.T) {
-	c, _ := NewClient()
+	time.Sleep(1 * time.Second)
 
+	c, _ := NewClient()
 	result, _, err := c.MoviesSearch("The Big Lebowski", 1, 1)
 
 	if err != nil {

@@ -1,14 +1,9 @@
 package rottentomatoes
 
-import (
-	"strconv"
-	"time"
-)
+import "strconv"
 
 // MovieInfo returns movie information using id of movie.
 func (c *Client) MovieInfo(id string) (movie Movie, err error) {
-
-	time.Sleep(1 * time.Second)
 
 	endpoint := c.getEndpoint("MovieInfo", id)
 	urlParams := c.prepareUrl(nil)
@@ -25,8 +20,6 @@ func (c *Client) MovieInfo(id string) (movie Movie, err error) {
 // MovieCast returns the abridged cast members of a movie.
 func (c *Client) MovieCast(id string) (castList []Cast, err error) {
 
-	time.Sleep(1 * time.Second)
-
 	endpoint := c.getEndpoint("MovieCast", id)
 	urlParams := c.prepareUrl(nil)
 	data, err := c.request(endpoint + urlParams)
@@ -42,8 +35,6 @@ func (c *Client) MovieCast(id string) (castList []Cast, err error) {
 // MovieClips returns clips, trailers etc. for a movie.
 func (c *Client) MovieClips(id string) (clips []Clip, err error) {
 
-	time.Sleep(1 * time.Second)
-
 	endpoint := c.getEndpoint("MovieClips", id)
 	urlParams := c.prepareUrl(nil)
 	data, err := c.request(endpoint + urlParams)
@@ -58,8 +49,6 @@ func (c *Client) MovieClips(id string) (clips []Clip, err error) {
 
 // MovieReviews returns reviews for a movie.
 func (c *Client) MovieReviews(id string, review_type string, page_limit int, page int, country string) (reviews []Review, total int, err error) {
-
-	time.Sleep(1 * time.Second)
 
 	endpoint := c.getEndpoint("MovieReviews", id)
 	page_limit_t := strconv.Itoa(page_limit)
@@ -86,8 +75,6 @@ func (c *Client) MovieReviews(id string, review_type string, page_limit int, pag
 // MovieSimilar returns similar movies.
 func (c *Client) MovieSimilar(id string, limit int) (movies []Movie_, err error) {
 
-	time.Sleep(1 * time.Second)
-
 	endpoint := c.getEndpoint("MovieSimilar", id)
 	limit_t := strconv.Itoa(limit)
 
@@ -109,8 +96,6 @@ func (c *Client) MovieSimilar(id string, limit int) (movies []Movie_, err error)
 // MovieAlias returns movie using alternative id, such as IMDB id.
 func (c *Client) MovieAlias(id string) (movie Movie, err error) {
 
-	time.Sleep(1 * time.Second)
-
 	endpoint := c.getEndpoint("MovieAlias", id)
 
 	q := map[string]string{
@@ -131,8 +116,6 @@ func (c *Client) MovieAlias(id string) (movie Movie, err error) {
 
 // MoviesSearch returns a list movies that matches the query string.
 func (c *Client) MoviesSearch(q string, page_limit int, page int) (movies []Movie_, total int, err error) {
-
-	time.Sleep(1 * time.Second)
 
 	endpoint := c.getEndpoint("MoviesSearch", "")
 
