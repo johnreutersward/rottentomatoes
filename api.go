@@ -206,3 +206,27 @@ func (c *Client) OpeningMovies(limit int, country string) (movies []Movie_, err 
 	movies, err = unmarshalMovies(data)
 	return
 }
+
+// UpcomingMovies, Retrieves upcoming movies. Results are paginated if they go past the specified page limit
+func (c *Client) UpcomingMovies(page_limit int, page int, country string) (movies []Movie_, total int, err error) {
+
+	endpoint := c.getEndpoint("UpcomingMovies", "")
+	page_limit_t := strconv.Itoa(page_limit)
+	page_t := strconv.Itoa(page)
+
+	q := map[string]string{
+		"page_limit": page_limit_t,
+		"page":       page_t,
+		"country":    country,
+	}
+
+	urlParams := c.prepareUrl(q)
+	data, err := c.request(endpoint + urlParams)
+
+	if err != nil {
+		return
+	}
+
+	movies, total, err = unmarshalSearch(data)
+	return
+}
