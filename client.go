@@ -31,13 +31,14 @@ func NewClient() (c *Client, err error) {
 	c = &Client{
 		ApiKey: apikey,
 		BaseUrl: map[string]string{
-			"MovieInfo":    "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}.json?",
-			"MovieCast":    "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/cast.json?",
-			"MovieClips":   "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/clips.json?",
-			"MovieReviews": "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/reviews.json?",
-			"MovieSimilar": "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/similar.json?",
-			"MovieAlias":   "http://api.rottentomatoes.com/api/public/v1.0/movie_alias.json?",
-			"MoviesSearch": "http://api.rottentomatoes.com/api/public/v1.0/movies.json?",
+			"BoxOfficeMovies": "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?",
+			"MovieInfo":       "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}.json?",
+			"MovieCast":       "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/cast.json?",
+			"MovieClips":      "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/clips.json?",
+			"MovieReviews":    "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/reviews.json?",
+			"MovieSimilar":    "http://api.rottentomatoes.com/api/public/v1.0/movies/{{.}}/similar.json?",
+			"MovieAlias":      "http://api.rottentomatoes.com/api/public/v1.0/movie_alias.json?",
+			"MoviesSearch":    "http://api.rottentomatoes.com/api/public/v1.0/movies.json?",
 		},
 	}
 	return

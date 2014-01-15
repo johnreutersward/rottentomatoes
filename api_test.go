@@ -137,3 +137,20 @@ func TestMoviesSearch(t *testing.T) {
 		t.Errorf("MoviesSearch = %+v,\nwant %+v", got, want)
 	}
 }
+
+func TestBoxOfficeMovies(t *testing.T) {
+	time.Sleep(1 * time.Second)
+
+	c, _ := NewClient()
+	m, err := c.BoxOfficeMovies(16, "us")
+
+	if err != nil {
+		t.Errorf("error not nil: %+v", err)
+	}
+
+	got := m[0].Synopsis
+
+	if got == "" {
+		t.Errorf("BoxOfficeMovies Synopsis empty")
+	}
+}

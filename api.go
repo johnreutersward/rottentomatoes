@@ -138,3 +138,25 @@ func (c *Client) MoviesSearch(q string, page_limit int, page int) (movies []Movi
 	movies, total, err = unmarshalSearch(data)
 	return
 }
+
+// BoxOfficeMovies, Top Box Office Earning Movies, Sorted by Most Recent Weekend Gross Ticket Sales.
+func (c *Client) BoxOfficeMovies(limit int, country string) (movies []Movie_, err error) {
+
+	endpoint := c.getEndpoint("BoxOfficeMovies", "")
+	limit_t := strconv.Itoa(limit)
+
+	q := map[string]string{
+		"limit":   limit_t,
+		"country": country,
+	}
+
+	urlParams := c.prepareUrl(q)
+	data, err := c.request(endpoint + urlParams)
+
+	if err != nil {
+		return
+	}
+
+	movies, err = unmarshalMovies(data)
+	return
+}
