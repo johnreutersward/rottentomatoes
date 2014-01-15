@@ -230,3 +230,25 @@ func (c *Client) UpcomingMovies(page_limit int, page int, country string) (movie
 	movies, total, err = unmarshalSearch(data)
 	return
 }
+
+// TopRentals, Retrieves the current top dvd rentals.
+func (c *Client) TopRentals(limit int, country string) (movies []Movie_, err error) {
+
+	endpoint := c.getEndpoint("TopRentals", "")
+	limit_t := strconv.Itoa(limit)
+
+	q := map[string]string{
+		"limit":   limit_t,
+		"country": country,
+	}
+
+	urlParams := c.prepareUrl(q)
+	data, err := c.request(endpoint + urlParams)
+
+	if err != nil {
+		return
+	}
+
+	movies, err = unmarshalMovies(data)
+	return
+}

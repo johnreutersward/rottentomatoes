@@ -213,3 +213,20 @@ func TestUpcomingMovies(t *testing.T) {
 		t.Errorf("UpcomingMovies title empty")
 	}
 }
+
+func TestTopRentals(t *testing.T) {
+	time.Sleep(1 * time.Second)
+
+	c, _ := NewClient()
+	m, err := c.TopRentals(1, "us")
+
+	if err != nil {
+		t.Errorf("error not nil: %+v", err)
+	}
+
+	got := m[0].Title
+
+	if got == "" {
+		t.Errorf("TopRentals Title empty")
+	}
+}
