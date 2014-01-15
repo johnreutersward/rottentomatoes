@@ -154,3 +154,24 @@ func TestBoxOfficeMovies(t *testing.T) {
 		t.Errorf("BoxOfficeMovies Synopsis empty")
 	}
 }
+
+func TestInTheatersMovies(t *testing.T) {
+	time.Sleep(1 * time.Second)
+
+	c, _ := NewClient()
+	m, total, err := c.InTheatersMovies(16, 1, "us")
+
+	if err != nil {
+		t.Errorf("error not nil: %+v", err)
+	}
+
+	got := m[0].Title
+
+	if total == 0 {
+		t.Errorf("InTheatersMovies total was zero")
+	}
+
+	if got == "" {
+		t.Errorf("InTheatersMovies title empty")
+	}
+}
