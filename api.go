@@ -252,3 +252,27 @@ func (c *Client) TopRentals(limit int, country string) (movies []Movie_, err err
 	movies, err = unmarshalMovies(data)
 	return
 }
+
+// CurrentReleaseDVDs, Retrieves current release dvds. Results are paginated if they go past the specified page limit.
+func (c *Client) CurrentReleaseDVDs(page_limit int, page int, country string) (movies []Movie_, total int, err error) {
+
+	endpoint := c.getEndpoint("CurrentReleaseDVDs", "")
+	page_limit_t := strconv.Itoa(page_limit)
+	page_t := strconv.Itoa(page)
+
+	q := map[string]string{
+		"page_limit": page_limit_t,
+		"page":       page_t,
+		"country":    country,
+	}
+
+	urlParams := c.prepareUrl(q)
+	data, err := c.request(endpoint + urlParams)
+
+	if err != nil {
+		return
+	}
+
+	movies, total, err = unmarshalSearch(data)
+	return
+}
