@@ -1,4 +1,32 @@
 // Package rottentomatoes implements a wrapper for the Rotten Tomatoes Web Api.
+//
+// Example:
+//
+//	package main
+//
+//	import (
+//		"fmt"
+//		"log"
+//		"net/http"
+//
+//		"github.com/rojters/rottentomatoes"
+//	)
+//
+//	func main() {
+//		rt, _ := rottentomatoes.NewClient(&http.Client{})
+//
+//		// Get info using movie id
+//		m, err := rt.MovieInfo("14281")
+//
+//		if err != nil {
+//			log.Fatal(err)
+//		}
+//
+//		fmt.Printf("Title: %s, Year: %d, Runtime: %d min\n", m.Title, m.Year, m.Runtime)
+//		// Title: The Big Lebowski, Year: 1998, Runtime: 118 min
+//
+//	}
+//
 package rottentomatoes
 
 import (
@@ -10,6 +38,7 @@ import (
 )
 
 type Client struct {
+	client  *http.Client
 	ApiKey  string
 	BaseUrl map[string]string
 }
@@ -19,7 +48,7 @@ type apiError struct {
 }
 
 // NewClient creates a rottentomatoes client instance.
-func NewClient() (c *Client, err error) {
+func NewClient(httpClient *http.Client) (c *Client, err error) {
 
 	apikey := os.Getenv("ROTTENTOMATOES_APIKEY")
 
@@ -29,6 +58,7 @@ func NewClient() (c *Client, err error) {
 	}
 
 	c = &Client{
+		client: httpClient,
 		ApiKey: apikey,
 		BaseUrl: map[string]string{
 			"BoxOfficeMovies":    "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?",
@@ -53,7 +83,7 @@ func NewClient() (c *Client, err error) {
 
 func (c *Client) request(endp string) (data []byte, err error) {
 
-	resp, err := http.Get(endp)
+	resp, err := c.client.Get(endp)
 
 	if err != nil {
 		return

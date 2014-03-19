@@ -1,12 +1,13 @@
 package rottentomatoes
 
 import (
+	"net/http"
 	"reflect"
 	"testing"
 )
 
 func TestGetEndpoint(t *testing.T) {
-	c, _ := NewClient()
+	c, _ := NewClient(&http.Client{})
 
 	got := c.getEndpoint("MovieInfo", "14281")
 	want := "http://api.rottentomatoes.com/api/public/v1.0/movies/14281.json?"

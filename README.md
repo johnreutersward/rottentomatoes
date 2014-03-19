@@ -23,12 +23,14 @@ package main
 
 import (
 	"fmt"
-	"github.com/rojters/rottentomatoes"
 	"log"
+	"net/http"
+
+	"github.com/rojters/rottentomatoes"
 )
 
 func main() {
-	rt, _ := rottentomatoes.NewClient()
+	rt, _ := rottentomatoes.NewClient(&http.Client{})
 
 	// Get info using movie id
 	m, err := rt.MovieInfo("14281")

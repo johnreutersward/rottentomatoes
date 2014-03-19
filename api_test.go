@@ -1,6 +1,7 @@
 package rottentomatoes
 
 import (
+	"net/http"
 	"reflect"
 	"testing"
 	"time"
@@ -15,7 +16,7 @@ a hard limit on the number of simultaneous connections.
 func TestMovieInfo(t *testing.T) {
 	time.Sleep(1 * time.Second)
 
-	c, _ := NewClient()
+	c, _ := NewClient(&http.Client{})
 	m, err := c.MovieInfo("14281")
 
 	if err != nil {
@@ -33,7 +34,7 @@ func TestMovieInfo(t *testing.T) {
 func TestMovieCast(t *testing.T) {
 	time.Sleep(1 * time.Second)
 
-	c, _ := NewClient()
+	c, _ := NewClient(&http.Client{})
 	cast, err := c.MovieCast("14281")
 
 	if err != nil {
@@ -51,7 +52,7 @@ func TestMovieCast(t *testing.T) {
 func TestMovieClips(t *testing.T) {
 	time.Sleep(1 * time.Second)
 
-	c, _ := NewClient()
+	c, _ := NewClient(&http.Client{})
 	clips, err := c.MovieClips("14281")
 
 	if err != nil {
@@ -69,7 +70,7 @@ func TestMovieClips(t *testing.T) {
 func TestMovieReviews(t *testing.T) {
 	time.Sleep(1 * time.Second)
 
-	c, _ := NewClient()
+	c, _ := NewClient(&http.Client{})
 	reviews, _, err := c.MovieReviews("14281", "top_critic", 5, 1, "us")
 
 	if err != nil {
@@ -87,7 +88,7 @@ func TestMovieReviews(t *testing.T) {
 func TestMovieSimilar(t *testing.T) {
 	time.Sleep(1 * time.Second)
 
-	c, _ := NewClient()
+	c, _ := NewClient(&http.Client{})
 	similar, err := c.MovieSimilar("14281", 5)
 
 	if err != nil {
@@ -105,7 +106,7 @@ func TestMovieSimilar(t *testing.T) {
 func TestMovieAlias(t *testing.T) {
 	time.Sleep(1 * time.Second)
 
-	c, _ := NewClient()
+	c, _ := NewClient(&http.Client{})
 	m, err := c.MovieAlias("0118715")
 
 	if err != nil {
@@ -123,7 +124,7 @@ func TestMovieAlias(t *testing.T) {
 func TestMoviesSearch(t *testing.T) {
 	time.Sleep(1 * time.Second)
 
-	c, _ := NewClient()
+	c, _ := NewClient(&http.Client{})
 	result, _, err := c.MoviesSearch("The Big Lebowski", 1, 1)
 
 	if err != nil {
@@ -141,7 +142,7 @@ func TestMoviesSearch(t *testing.T) {
 func TestBoxOfficeMovies(t *testing.T) {
 	time.Sleep(1 * time.Second)
 
-	c, _ := NewClient()
+	c, _ := NewClient(&http.Client{})
 	m, err := c.BoxOfficeMovies(1, "us")
 
 	if err != nil {
@@ -158,7 +159,7 @@ func TestBoxOfficeMovies(t *testing.T) {
 func TestInTheatersMovies(t *testing.T) {
 	time.Sleep(1 * time.Second)
 
-	c, _ := NewClient()
+	c, _ := NewClient(&http.Client{})
 	m, total, err := c.InTheatersMovies(1, 1, "us")
 
 	if err != nil {
@@ -179,7 +180,7 @@ func TestInTheatersMovies(t *testing.T) {
 func TestOpeningMovies(t *testing.T) {
 	time.Sleep(1 * time.Second)
 
-	c, _ := NewClient()
+	c, _ := NewClient(&http.Client{})
 	m, err := c.OpeningMovies(1, "us")
 
 	if err != nil {
@@ -196,7 +197,7 @@ func TestOpeningMovies(t *testing.T) {
 func TestUpcomingMovies(t *testing.T) {
 	time.Sleep(1 * time.Second)
 
-	c, _ := NewClient()
+	c, _ := NewClient(&http.Client{})
 	m, total, err := c.UpcomingMovies(1, 1, "us")
 
 	if err != nil {
@@ -217,7 +218,7 @@ func TestUpcomingMovies(t *testing.T) {
 func TestTopRentals(t *testing.T) {
 	time.Sleep(1 * time.Second)
 
-	c, _ := NewClient()
+	c, _ := NewClient(&http.Client{})
 	m, err := c.TopRentals(1, "us")
 
 	if err != nil {
@@ -234,7 +235,7 @@ func TestTopRentals(t *testing.T) {
 func TestCurrentReleaseDVDs(t *testing.T) {
 	time.Sleep(1 * time.Second)
 
-	c, _ := NewClient()
+	c, _ := NewClient(&http.Client{})
 	m, _, err := c.CurrentReleaseDVDs(1, 1, "us")
 
 	if err != nil {
@@ -251,7 +252,7 @@ func TestCurrentReleaseDVDs(t *testing.T) {
 func TestNewReleaseDVDs(t *testing.T) {
 	time.Sleep(1 * time.Second)
 
-	c, _ := NewClient()
+	c, _ := NewClient(&http.Client{})
 	m, _, err := c.NewReleaseDVDs(1, 1, "us")
 
 	if err != nil {
@@ -268,7 +269,7 @@ func TestNewReleaseDVDs(t *testing.T) {
 func TestUpcomingDVDs(t *testing.T) {
 	time.Sleep(1 * time.Second)
 
-	c, _ := NewClient()
+	c, _ := NewClient(&http.Client{})
 	m, _, err := c.UpcomingDVDs(1, 1, "us")
 
 	if err != nil {
