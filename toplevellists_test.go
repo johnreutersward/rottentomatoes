@@ -2,9 +2,15 @@ package rottentomatoes
 
 import (
 	"testing"
+	"time"
 )
 
+// There is a 1 second delay for each test,
+// this is because the Rotten Tomatoes API enforces
+// a hard limit on the number of simultaneous connections.
+
 func TestListsDirectory(t *testing.T) {
+	time.Sleep(1 * time.Second)
 
 	rt := NewClient(nil, "")
 
@@ -17,6 +23,7 @@ func TestListsDirectory(t *testing.T) {
 }
 
 func TestMovieListsDirectory(t *testing.T) {
+	time.Sleep(1 * time.Second)
 
 	rt := NewClient(nil, "")
 
@@ -29,6 +36,7 @@ func TestMovieListsDirectory(t *testing.T) {
 }
 
 func TestDVDListsDirectory(t *testing.T) {
+	time.Sleep(1 * time.Second)
 
 	rt := NewClient(nil, "")
 
