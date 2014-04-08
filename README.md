@@ -1,16 +1,12 @@
-# rotttentomatoes
+# rottentomatoes
 
 [![travis-ci status](https://api.travis-ci.org/rojters/rottentomatoes.png)](https://travis-ci.org/rojters/rottentomatoes) [![GoDoc](https://godoc.org/github.com/rojters/rottentomatoes?status.png)](https://godoc.org/github.com/rojters/rottentomatoes) 
 
-Rotten Tomatoes API wrapper for Go
+rottentomatoes is a Go client library for accessing the Rotten Tomatoes API.
 
 ## Usage
 
-Start by applying for an API key at http://developer.rottentomatoes.com/ (it's free).
-
-Store the API key in a enviromental variable called `ROTTENTOMATOES_APIKEY`.
-
-Install by issuing: 
+Install: 
 
 ```bash
 $ go get github.com/rojters/rottentomatoes
@@ -23,25 +19,19 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"net/http"
-
 	"github.com/rojters/rottentomatoes"
 )
 
 func main() {
-	rt, _ := rottentomatoes.NewClient(&http.Client{})
+	// Create a new client.
+	rt := rottentomatoes.NewClient(nil, "")
 
-	// Get info using movie id
-	m, err := rt.MovieInfo("14281")
+	// Use IMDb Id to find movie information.
+	// http://www.imdb.com/title/tt0118715/
+	m, _ := rt.DetailedInfo.MovieAlias("0118715")
 
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Printf("Title: %s, Year: %d, Runtime: %d min\n", m.Title, m.Year, m.Runtime)
-	// Title: The Big Lebowski, Year: 1998, Runtime: 118 min
-
+	// This will output: The Big Lebowski (1998), with: Jeff Bridges, John Goodman
+	fmt.Printf("%s (%d), with: %s, %s", m.Title, m.Year, m.AbridgedCast[0].Name, m.AbridgedCast[1].Name)
 }
 ```
 
