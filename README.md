@@ -1,4 +1,4 @@
-# rottentomatoes
+# [![Rotten Tomatoes API](http://i.imgur.com/1XiPsZY.png?2)](http://developer.rottentomatoes.com/) rottentomatoes 
 
 [![travis-ci status](https://api.travis-ci.org/rojters/rottentomatoes.png)](https://travis-ci.org/rojters/rottentomatoes) [![GoDoc](https://godoc.org/github.com/rojters/rottentomatoes?status.png)](https://godoc.org/github.com/rojters/rottentomatoes) 
 
