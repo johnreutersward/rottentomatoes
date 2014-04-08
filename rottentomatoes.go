@@ -1,26 +1,27 @@
-// Package rottentomatoes provides a client for using the Rotten Tomatoes API.
-//
-// Example:
-//
-// package main
-//
-// import (
-//     "fmt"
-// 	   "github.com/rojters/rottentomatoes"
-// )
-//
-// func main() {
-// 	   // Create a new client.
-//     rt := rottentomatoes.NewClient(nil, "")
-//
-// 	   // Use IMDb Id to find movie information.
-// 	   // http://www.imdb.com/title/tt0118715/
-// 	   m, _ := rt.DetailedInfo.MovieAlias("0118715")
-//
-// 	   // This will output: The Big Lebowski (1998), with: Jeff Bridges, John Goodman
-// 	   fmt.Printf("%s (%d), with: %s, %s", m.Title, m.Year, m.AbridgedCast[0].Name, m.AbridgedCast[1].Name)
-// }
-//
+/*
+Package rottentomatoes provides a client for using the Rotten Tomatoes API.
+
+Example:
+
+	package main
+
+	import (
+		"fmt"
+		"github.com/rojters/rottentomatoes"
+	)
+
+	func main() {
+		// Create a new client.
+		rt := rottentomatoes.NewClient(nil, "")
+
+		// Use IMDb Id to find movie information.
+		// http://www.imdb.com/title/tt0118715/
+		m, _ := rt.DetailedInfo.MovieAlias("0118715")
+
+		// This will output: The Big Lebowski (1998), with: Jeff Bridges, John Goodman
+		fmt.Printf("%s (%d), with: %s, %s", m.Title, m.Year, m.AbridgedCast[0].Name, m.AbridgedCast[1].Name)
+	}
+*/
 package rottentomatoes
 
 import (
