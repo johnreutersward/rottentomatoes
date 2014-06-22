@@ -2,9 +2,9 @@
 
 rottentomatoes is a Go client library for accessing the Rotten Tomatoes API.
 
-**Documentation:** <http://godoc.org/github.com/rojters/rottentomatoes>
-**Build Status:** [![travis-ci status](https://api.travis-ci.org/rojters/rottentomatoes.png)](https://travis-ci.org/rojters/rottentomatoes)
-**Rotten Tomatoes API Documentation:** <http://developer.rottentomatoes.com/>
+**Documentation:** <http://godoc.org/github.com/rojters/rottentomatoes>  
+**Rotten Tomatoes API Documentation:** <http://developer.rottentomatoes.com/>  
+**Build Status:** [![travis-ci status](https://api.travis-ci.org/rojters/rottentomatoes.png)](https://travis-ci.org/rojters/rottentomatoes)  
 
 ## Usage ##
 
