@@ -1,26 +1,29 @@
 /*
 Package rottentomatoes provides a client for using the Rotten Tomatoes API.
 
-Example:
 
-	package main
+Usage:
 
-	import (
-		"fmt"
-		"github.com/rojters/rottentomatoes"
-	)
+	import "github.com/rojters/rottentomatoes"
 
-	func main() {
-		// Create a new client.
-		rt := rottentomatoes.NewClient(nil, "")
+Construct a new Rotten Tomatoes client, then use the various services on the client to
+access different parts of the Rotten Tomatoes API. For example, to find information
+about a particular movie using it's IMDb Id:
 
-		// Use IMDb Id to find movie information.
-		// http://www.imdb.com/title/tt0118715/
-		m, _ := rt.DetailedInfo.MovieAlias("0118715")
+	rt := rottentomatoes.NewClient(nil, "")
+	// http://www.imdb.com/title/tt0118715/ (The Big Lebowski)
+	m, _ := rt.DetailedInfo.MovieAlias("0118715")
 
-		// This will output: The Big Lebowski (1998), with: Jeff Bridges, John Goodman
-		fmt.Printf("%s (%d), with: %s, %s", m.Title, m.Year, m.AbridgedCast[0].Name, m.AbridgedCast[1].Name)
-	}
+Some API methods have optional parameters that can be passed. For example,
+to page limit the number of results returned:
+
+	rt := rottentomatoes.NewClient(nil, "")
+	opt := &rottentomatoes.Options{PageLimit: 10}
+	it, _ := rt.MovieLists.InTheaters(Opt)
+
+The services of a client divide the API into logical chunks and correspond to
+the structure of the Rotten Tomatoes API Documentation at
+http://developer.rottentomatoes.com/.
 */
 package rottentomatoes
 
