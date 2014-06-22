@@ -8,8 +8,6 @@ rottentomatoes is a Go client library for accessing the Rotten Tomatoes API.
 
 ## Usage ##
 
-Install: 
-
 ```go
 import "github.com/rojters/rottentomatoes"
 ```
